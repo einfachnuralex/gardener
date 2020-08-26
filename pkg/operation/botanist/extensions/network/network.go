@@ -17,6 +17,7 @@ package network
 import (
 	"context"
 	"net"
+	"strings"
 	"time"
 
 	v1beta1constants "github.com/gardener/gardener/pkg/apis/core/v1beta1/constants"
@@ -58,7 +59,7 @@ type Values struct {
 	// ProviderConfig contains the provider config for the Network extension.
 	ProviderConfig *runtime.RawExtension
 	// PodCIDR is the Shoot's pod CIDR in the Shoot VPC
-	PodCIDR *net.IPNet
+	PodCIDR []*net.IPNet
 	// ServiceCIDR is the Shoot's service CIDR in the Shoot VPC
 	ServiceCIDR *net.IPNet
 }
@@ -112,12 +113,17 @@ func (d *network) Deploy(ctx context.Context) error {
 		metav1.SetMetaDataAnnotation(&network.ObjectMeta, v1beta1constants.GardenerOperation, operation)
 		metav1.SetMetaDataAnnotation(&network.ObjectMeta, v1beta1constants.GardenerTimestamp, TimeNow().UTC().String())
 
+		var podCidrs []string
+		for _, pod := range d.values.PodCIDR {
+			podCidrs = append(podCidrs, pod.String())
+		}
+
 		network.Spec = extensionsv1alpha1.NetworkSpec{
 			DefaultSpec: extensionsv1alpha1.DefaultSpec{
 				Type:           d.values.Type,
 				ProviderConfig: d.values.ProviderConfig,
 			},
-			PodCIDR:     d.values.PodCIDR.String(),
+			PodCIDR:     strings.Join(podCidrs, ","),
 			ServiceCIDR: d.values.ServiceCIDR.String(),
 		}
 

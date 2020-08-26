@@ -94,9 +94,14 @@ func (b *Botanist) DeploySeedMonitoring(ctx context.Context) error {
 		},
 	}
 
+	var podCidrs []string
+	for _, pod := range b.Shoot.Networks.Pods {
+		podCidrs = append(podCidrs, pod.String())
+	}
+
 	var (
 		networks = map[string]interface{}{
-			"pods":     b.Shoot.Networks.Pods.String(),
+			"pods":     strings.Join(podCidrs, ","),
 			"services": b.Shoot.Networks.Services.String(),
 		}
 		prometheusConfig = map[string]interface{}{

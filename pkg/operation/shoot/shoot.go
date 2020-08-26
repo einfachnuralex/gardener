@@ -505,9 +505,13 @@ func ToNetworks(s *gardencorev1beta1.Shoot) (*Networks, error) {
 		return nil, fmt.Errorf("cannot parse shoot's network cidr %v", err)
 	}
 
-	_, pods, err := net.ParseCIDR(*s.Spec.Networking.Pods)
-	if err != nil {
-		return nil, fmt.Errorf("cannot parse shoot's network cidr %v", err)
+	var pods []*net.IPNet
+	for _, podNet := range strings.Split(string(*s.Spec.Networking.Pods), ",") {
+		_, pod, err := net.ParseCIDR(podNet)
+		if err != nil {
+			return nil, fmt.Errorf("cannot parse shoot's network cidr %v", err)
+		}
+		pods = append(pods, pod)
 	}
 
 	apiserver, err := common.ComputeOffsetIP(svc, 1)

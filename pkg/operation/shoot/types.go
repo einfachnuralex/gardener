@@ -102,7 +102,7 @@ type ControlPlane struct {
 // Networks contains pre-calculated subnets and IP address for various components.
 type Networks struct {
 	// Pods subnet
-	Pods *net.IPNet
+	Pods []*net.IPNet
 	// Services subnet
 	Services *net.IPNet
 	// APIServer is the ClusterIP of default/kubernetes Service
