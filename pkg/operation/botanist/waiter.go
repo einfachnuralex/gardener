@@ -19,6 +19,7 @@ import (
 	"errors"
 	"fmt"
 	"net"
+	"strings"
 	"sync"
 	"time"
 
@@ -351,11 +352,15 @@ func (b *Botanist) WaitUntilEndpointsDoNotContainPodIPs(ctx context.Context) err
 	b.Logger.Info("waiting until there are no Endpoints containing Pod IPs in the shoot cluster...")
 
 	var podsNetwork *net.IPNet
+	var podsNetworks []*net.IPNet
 	if val := b.Shoot.Info.Spec.Networking.Pods; val != nil {
-		var err error
-		_, podsNetwork, err = net.ParseCIDR(*val)
-		if err != nil {
-			return fmt.Errorf("unable to check if there are still Endpoints containing Pod IPs in the shoot cluster. Shoots's Pods network could not be parsed: %+v", err)
+		for _, podNet := range strings.Split(string(*val), ",") {
+			var err error
+			_, podsNetwork, err = net.ParseCIDR(podNet)
+			if err != nil {
+				return fmt.Errorf("unable to check if there are still Endpoints containing Pod IPs in the shoot cluster. Shoots's Pods network could not be parsed: %+v", err)
+			}
+			podsNetworks = append(podsNetworks, podsNetwork)
 		}
 	} else {
 		return fmt.Errorf("unable to check if there are still Endpoints containing Pod IPs in the shoot cluster. Shoot's Pods network is empty")
@@ -387,11 +392,13 @@ func (b *Botanist) WaitUntilEndpointsDoNotContainPodIPs(ctx context.Context) err
 
 			for _, subset := range endpoints.Subsets {
 				for _, address := range subset.Addresses {
-					if podsNetwork.Contains(net.ParseIP(address.IP)) {
-						msg := fmt.Sprintf("waiting until there are no Endpoints containing Pod IPs in the shoot cluster... "+
-							"There is still at least one Endpoints object containing a Pod's IP: %s/%s, IP: %s", endpoints.Namespace, endpoints.Name, address.IP)
-						b.Logger.Info(msg)
-						return retry.MinorError(fmt.Errorf(msg))
+					for _, podNet := range podsNetworks {
+						if podNet.Contains(net.ParseIP(address.IP)) {
+							msg := fmt.Sprintf("waiting until there are no Endpoints containing Pod IPs in the shoot cluster... "+
+								"There is still at least one Endpoints object containing a Pod's IP: %s/%s, IP: %s", endpoints.Namespace, endpoints.Name, address.IP)
+							b.Logger.Info(msg)
+							return retry.MinorError(fmt.Errorf(msg))
+						}
 					}
 				}
 			}
