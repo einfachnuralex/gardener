@@ -19,6 +19,7 @@ metadata:
     core.gardener.cloud/apiserver-exposure: gardener-managed
 {{- end }}
 spec:
+  ipFamily: IPv4
   type: {{ if .Values.enableSNI }}ClusterIP{{ else }}LoadBalancer{{ end }}
   selector:
     app: kubernetes

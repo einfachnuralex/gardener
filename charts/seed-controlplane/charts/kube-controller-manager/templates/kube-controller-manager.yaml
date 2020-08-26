@@ -49,9 +49,15 @@ spec:
         - --allocate-node-cidrs=true
         - --attach-detach-reconcile-sync-period=1m0s
         - --controllers=*,bootstrapsigner,tokencleaner
+
+        {{- if hasKey .Values.featureGates "IPv6DualStack" }}
+        - --node-cidr-mask-size-ipv4={{ .Values.nodeCIDRMaskSize }}
+        {{- else }}
         {{- if .Values.nodeCIDRMaskSize }}
         - --node-cidr-mask-size={{ .Values.nodeCIDRMaskSize }}
         {{- end }}
+        {{- end }}
+
         - --cluster-cidr={{ .Values.podNetwork }}
         - --cluster-name={{ .Values.clusterName }}
         - --cluster-signing-cert-file=/srv/kubernetes/ca/ca.crt

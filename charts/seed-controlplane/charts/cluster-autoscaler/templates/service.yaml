@@ -7,6 +7,7 @@ metadata:
     app: kubernetes
     role: cluster-autoscaler
 spec:
+  ipFamily: IPv4
   type: ClusterIP
   clusterIP: None
   ports:

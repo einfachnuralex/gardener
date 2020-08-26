@@ -7,6 +7,7 @@ metadata:
   labels:
     app: vpn-shoot
 spec:
+  ipFamily: IPv6
   selector:
     app: vpn-shoot
   type: LoadBalancer
