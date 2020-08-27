@@ -45,9 +45,9 @@ spec:
         imagePullPolicy: IfNotPresent
         env:
         - name: SERVICE_NETWORK
-          value: {{ .Values.serviceNetwork }}
+          value: "{{ (split "," .Values.serviceNetwork)._0 }}"
         - name: POD_NETWORK
-          value: {{ .Values.podNetwork }}
+          value: "{{ (split "," .Values.podNetwork)._0 }}"
         {{- if .Values.nodeNetwork }}
         - name: NODE_NETWORK
           value: {{ .Values.nodeNetwork }}

@@ -99,10 +99,15 @@ func (b *Botanist) DeploySeedMonitoring(ctx context.Context) error {
 		podCidrs = append(podCidrs, pod.String())
 	}
 
+	var svcCidrs []string
+	for _, svc := range b.Shoot.Networks.Services {
+		svcCidrs = append(svcCidrs, svc.String())
+	}
+
 	var (
 		networks = map[string]interface{}{
 			"pods":     strings.Join(podCidrs, ","),
-			"services": b.Shoot.Networks.Services.String(),
+			"services": strings.Join(svcCidrs, ","),
 		}
 		prometheusConfig = map[string]interface{}{
 			"kubernetesVersion": b.Shoot.Info.Spec.Kubernetes.Version,

@@ -61,7 +61,7 @@ type Values struct {
 	// PodCIDR is the Shoot's pod CIDR in the Shoot VPC
 	PodCIDR []*net.IPNet
 	// ServiceCIDR is the Shoot's service CIDR in the Shoot VPC
-	ServiceCIDR *net.IPNet
+	ServiceCIDR []*net.IPNet
 }
 
 // New creates a new instance of DeployWaiter for a Network.
@@ -118,13 +118,18 @@ func (d *network) Deploy(ctx context.Context) error {
 			podCidrs = append(podCidrs, pod.String())
 		}
 
+		var svcCidrs []string
+		for _, svc := range d.values.ServiceCIDR {
+			svcCidrs = append(svcCidrs, svc.String())
+		}
+
 		network.Spec = extensionsv1alpha1.NetworkSpec{
 			DefaultSpec: extensionsv1alpha1.DefaultSpec{
 				Type:           d.values.Type,
 				ProviderConfig: d.values.ProviderConfig,
 			},
 			PodCIDR:     strings.Join(podCidrs, ","),
-			ServiceCIDR: d.values.ServiceCIDR.String(),
+			ServiceCIDR: strings.Join(svcCidrs, ","),
 		}
 
 		return nil

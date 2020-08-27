@@ -837,7 +837,9 @@ func (b *Botanist) deployNetworkPolicies(ctx context.Context, denyAll bool) erro
 		}
 	}
 	if v := b.Shoot.Info.Spec.Networking.Services; v != nil {
-		shootCIDRNetworks = append(shootCIDRNetworks, *v)
+		for _, svcNet := range strings.Split(string(*v), ",") {
+			shootCIDRNetworks = append(shootCIDRNetworks, svcNet)
+		}
 	}
 	shootNetworkValues, err := common.ExceptNetworks(shootCIDRNetworks, excludeNets...)
 	if err != nil {
@@ -888,6 +890,11 @@ func (b *Botanist) DeployKubeAPIServer(ctx context.Context) error {
 		podCidrs = append(podCidrs, pod.String())
 	}
 
+	var svcCidrs []string
+	for _, svc := range b.Shoot.Networks.Services {
+		svcCidrs = append(svcCidrs, svc.String())
+	}
+
 	var (
 		podAnnotations = map[string]interface{}{
 			"checksum/secret-ca":                     b.CheckSums[v1beta1constants.SecretNameCACluster],
@@ -924,7 +931,7 @@ func (b *Botanist) DeployKubeAPIServer(ctx context.Context) error {
 		maxReplicas int32 = 4
 
 		shootNetworks = map[string]interface{}{
-			"services": b.Shoot.Networks.Services.String(),
+			"services": strings.Join(svcCidrs, ","),
 			"pods":     strings.Join(podCidrs, ","),
 		}
 	)
@@ -1221,11 +1228,16 @@ func (b *Botanist) DeployKubeControllerManager(ctx context.Context) error {
 		podCidrs = append(podCidrs, pod.String())
 	}
 
+	var svcCidrs []string
+	for _, svc := range b.Shoot.Networks.Services {
+		svcCidrs = append(svcCidrs, svc.String())
+	}
+
 	defaultValues := map[string]interface{}{
 		"clusterName":       b.Shoot.SeedNamespace,
 		"kubernetesVersion": b.Shoot.Info.Spec.Kubernetes.Version,
 		"podNetwork":        strings.Join(podCidrs, ","),
-		"serviceNetwork":    b.Shoot.Networks.Services.String(),
+		"serviceNetwork":    strings.Join(svcCidrs, ","),
 		"podAnnotations": map[string]interface{}{
 			"checksum/secret-ca":                             b.CheckSums[v1beta1constants.SecretNameCACluster],
 			"checksum/secret-kube-controller-manager":        b.CheckSums[v1beta1constants.DeploymentNameKubeControllerManager],

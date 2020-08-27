@@ -500,9 +500,13 @@ func ToNetworks(s *gardencorev1beta1.Shoot) (*Networks, error) {
 		return nil, fmt.Errorf("shoot's pods cidr is empty")
 	}
 
-	_, svc, err := net.ParseCIDR(*s.Spec.Networking.Services)
-	if err != nil {
-		return nil, fmt.Errorf("cannot parse shoot's network cidr %v", err)
+	var svcs []*net.IPNet
+	for _, svcNet := range strings.Split(string(*s.Spec.Networking.Services), ",") {
+		_, svc, err := net.ParseCIDR(svcNet)
+		if err != nil {
+			return nil, fmt.Errorf("cannot parse shoot's network cidr %v", err)
+		}
+		svcs = append(svcs, svc)
 	}
 
 	var pods []*net.IPNet
@@ -514,12 +518,12 @@ func ToNetworks(s *gardencorev1beta1.Shoot) (*Networks, error) {
 		pods = append(pods, pod)
 	}
 
-	apiserver, err := common.ComputeOffsetIP(svc, 1)
+	apiserver, err := common.ComputeOffsetIP(svcs[0], 1)
 	if err != nil {
 		return nil, fmt.Errorf("cannot calculate default/kubernetes ClusterIP: %v", err)
 	}
 
-	coreDNS, err := common.ComputeOffsetIP(svc, 10)
+	coreDNS, err := common.ComputeOffsetIP(svcs[0], 10)
 	if err != nil {
 		return nil, fmt.Errorf("cannot calculate CoreDNS ClusterIP: %v", err)
 	}
@@ -527,7 +531,7 @@ func ToNetworks(s *gardencorev1beta1.Shoot) (*Networks, error) {
 	return &Networks{
 		CoreDNS:   coreDNS,
 		Pods:      pods,
-		Services:  svc,
+		Services:  svcs,
 		APIServer: apiserver,
 	}, nil
 }

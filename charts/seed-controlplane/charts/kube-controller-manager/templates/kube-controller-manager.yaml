@@ -52,6 +52,7 @@ spec:
 
         {{- if hasKey .Values.featureGates "IPv6DualStack" }}
         - --node-cidr-mask-size-ipv4={{ .Values.nodeCIDRMaskSize }}
+        - --node-cidr-mask-size-ipv6=120
         {{- else }}
         {{- if .Values.nodeCIDRMaskSize }}
         - --node-cidr-mask-size={{ .Values.nodeCIDRMaskSize }}

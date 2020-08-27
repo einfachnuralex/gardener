@@ -11,9 +11,7 @@ data:
     kind: KubeProxyConfiguration
     clientConnection:
       kubeconfig: /var/lib/kube-proxy/kubeconfig
-{{- if not .Values.enableIPVS }}
     clusterCIDR: {{ .Values.global.podNetwork }}
-{{- end }}
     metricsBindAddress: 0.0.0.0:{{ .Values.ports.metrics }}
     mode: {{ include "kube-proxy.mode" . }}
     conntrack:

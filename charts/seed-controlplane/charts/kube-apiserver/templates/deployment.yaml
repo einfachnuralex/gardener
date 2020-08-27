@@ -337,9 +337,9 @@ spec:
         - name: APISERVER_AUTH_MODE_CLIENT_CERT_KEY
           value: /srv/secrets/vpn-seed/tls.key
         - name: SERVICE_NETWORK
-          value: {{ .Values.shootNetworks.services }}
+          value: "{{ (split "," .Values.shootNetworks.services)._0  }}"
         - name: POD_NETWORK
-          value: {{ .Values.shootNetworks.pods }}
+          value: "{{ (split "," .Values.shootNetworks.pods)._0 }}"
         {{- if .Values.shootNetworks.nodes }}
         - name: NODE_NETWORK
           value: {{ .Values.shootNetworks.nodes }}

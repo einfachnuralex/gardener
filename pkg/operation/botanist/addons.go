@@ -303,6 +303,11 @@ func (b *Botanist) generateCoreAddonsChart() (*chartrenderer.RenderedChart, erro
 		podCidrs = append(podCidrs, pod.String())
 	}
 
+	var svcCidrs []string
+	for _, svc := range b.Shoot.Networks.Services {
+		svcCidrs = append(svcCidrs, svc.String())
+	}
+
 	var (
 		kubeProxySecret = b.Secrets["kube-proxy"]
 		global          = map[string]interface{}{
@@ -353,7 +358,7 @@ func (b *Botanist) generateCoreAddonsChart() (*chartrenderer.RenderedChart, erro
 			"region":            b.Shoot.Info.Spec.Region,
 			"kubernetesVersion": b.Shoot.Info.Spec.Kubernetes.Version,
 			"podNetwork":        strings.Join(podCidrs, ","),
-			"serviceNetwork":    b.Shoot.Networks.Services.String(),
+			"serviceNetwork":    strings.Join(svcCidrs, ","),
 			"maintenanceBegin":  b.Shoot.Info.Spec.Maintenance.TimeWindow.Begin,
 			"maintenanceEnd":    b.Shoot.Info.Spec.Maintenance.TimeWindow.End,
 		}
@@ -478,7 +483,7 @@ func (b *Botanist) generateCoreAddonsChart() (*chartrenderer.RenderedChart, erro
 			vpnShootSecret   = b.Secrets["vpn-shoot"]
 			vpnShootConfig   = map[string]interface{}{
 				"podNetwork":     strings.Join(podCidrs, ","),
-				"serviceNetwork": b.Shoot.Networks.Services.String(),
+				"serviceNetwork": strings.Join(svcCidrs, ","),
 				"tlsAuth":        vpnTLSAuthSecret.Data["vpn.tlsauth"],
 				"vpnShootSecretData": map[string]interface{}{
 					"ca":     vpnShootSecret.Data["ca.crt"],

@@ -1,5 +1,14 @@
-	
-EFFECTIVE_VERSION=v1.7.32
+#!/bin/bash
+# v1.7.32: change in operation
+# v1.7.33: chart api server vpn sidecar split podnetwork
+# v1.7.34: controllermanager chart add node cidr ipv6
+# v1.7.35: chart shoot-core vpn-shoot, podcidr split
+# v1.7.36: add svc dual net
+# v1.7.37: chart proxy configmap add podnetwork
+# v1.7.38: chart vpn-shoot/apisrv, svccidr split
+# v1.7.39: fix typo in servicenetwork shoot-core chart
+
+EFFECTIVE_VERSION=v1.7.39
 REGISTRY=einfachnuralex
 APISERVER_IMAGE_REPOSITORY=$REGISTRY/apiserver
 CONROLLER_MANAGER_IMAGE_REPOSITORY=$REGISTRY/controller-manager

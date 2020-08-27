@@ -625,10 +625,12 @@ func validateNetworking(networking core.Networking, fldPath *field.Path) field.E
 
 	if networking.Services != nil {
 		path := fldPath.Child("services")
-		cidr := cidrvalidation.NewCIDR(*networking.Services, path)
+		for _, svcCidr := range strings.Split(string(*networking.Services), ",") {
+			cidr := cidrvalidation.NewCIDR(svcCidr, path)
 
-		allErrs = append(allErrs, cidr.ValidateParse()...)
-		allErrs = append(allErrs, cidrvalidation.ValidateCIDRIsCanonical(path, cidr.GetCIDR())...)
+			allErrs = append(allErrs, cidr.ValidateParse()...)
+			allErrs = append(allErrs, cidrvalidation.ValidateCIDRIsCanonical(path, cidr.GetCIDR())...)
+		}
 	}
 
 	return allErrs
