@@ -7,9 +7,11 @@
 # v1.7.37: chart proxy configmap add podnetwork
 # v1.7.38: chart vpn-shoot/apisrv, svccidr split
 # v1.7.39: fix typo in servicenetwork shoot-core chart
+# v1.7.40: changed validation of nodeip from ipv4 to ipv4,ipv6
+# v1.7.41: set ipFamily of node exporter service to ipv4
 
-EFFECTIVE_VERSION=v1.7.39
-REGISTRY=einfachnuralex
+EFFECTIVE_VERSION=v1.7.41
+REGISTRY=registry.alpha.ske.eu01.stackit.cloud/gardener-ds
 APISERVER_IMAGE_REPOSITORY=$REGISTRY/apiserver
 CONROLLER_MANAGER_IMAGE_REPOSITORY=$REGISTRY/controller-manager
 SCHEDULER_IMAGE_REPOSITORY=$REGISTRY/scheduler

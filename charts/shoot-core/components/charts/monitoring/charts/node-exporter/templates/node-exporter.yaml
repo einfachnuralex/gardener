@@ -16,6 +16,7 @@ metadata:
 spec:
   type: ClusterIP
   clusterIP: None
+  ipFamily: IPv4
   ports:
   - name: metrics
     port: {{ .Values.ports.metrics }}
