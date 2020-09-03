@@ -614,6 +614,8 @@ type Networking struct {
 	Nodes *string
 	// Services is the CIDR of the service network.
 	Services *string
+	// Map for Feature Gates
+	FeatureGates map[string]string
 }
 
 const (
