@@ -9,8 +9,9 @@
 # v1.7.39: fix typo in servicenetwork shoot-core chart
 # v1.7.40: changed validation of nodeip from ipv4 to ipv4,ipv6
 # v1.7.41: set ipFamily of node exporter service to ipv4
+# v1.7.42: more changes to dualstack also in mcm and os provider
 
-EFFECTIVE_VERSION=v1.7.41
+EFFECTIVE_VERSION=v1.7.42
 REGISTRY=registry.alpha.ske.eu01.stackit.cloud/gardener-ds
 APISERVER_IMAGE_REPOSITORY=$REGISTRY/apiserver
 CONROLLER_MANAGER_IMAGE_REPOSITORY=$REGISTRY/controller-manager
