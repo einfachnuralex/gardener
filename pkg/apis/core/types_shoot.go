@@ -614,6 +614,12 @@ type Networking struct {
 	Nodes *string
 	// Services is the CIDR of the service network.
 	Services *string
+	// Map for Feature Gates
+	FeatureGates *FeatureGates
+}
+
+type FeatureGates struct {
+	IPv6DualStack *bool
 }
 
 const (
