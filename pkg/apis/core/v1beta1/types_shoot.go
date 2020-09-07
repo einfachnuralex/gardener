@@ -772,11 +772,11 @@ type Networking struct {
 	// +optional
 	Services *string `json:"services,omitempty" protobuf:"bytes,5,opt,name=services"`
 	// +optional
-	FeatureGates *FeatureGates `json:"featureGates,omitempty" protobuf:"bytes,5,opt,name=featureGates"`
+	FeatureGates FeatureGates `json:"featureGates,omitempty" protobuf:"bytes,5,opt,name=featureGates"`
 }
 
 type FeatureGates struct {
-	IPv6DualStack bool
+	IPv6DualStack bool `json:"IPv6DualStack,omitempty" protobuf:"varint,5,opt,name=IPv6DualStack"`
 }
 
 const (

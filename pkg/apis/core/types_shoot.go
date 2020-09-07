@@ -615,7 +615,7 @@ type Networking struct {
 	// Services is the CIDR of the service network.
 	Services *string
 	// Map for Feature Gates
-	FeatureGates *FeatureGates
+	FeatureGates FeatureGates
 }
 
 type FeatureGates struct {
