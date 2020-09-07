@@ -771,6 +771,12 @@ type Networking struct {
 	// Services is the CIDR of the service network.
 	// +optional
 	Services *string `json:"services,omitempty" protobuf:"bytes,5,opt,name=services"`
+	// +optional
+	FeatureGates *FeatureGates `json:"featureGates,omitempty" protobuf:"bytes,5,opt,name=featureGates"`
+}
+
+type FeatureGates struct {
+	IPv6DualStack bool
 }
 
 const (

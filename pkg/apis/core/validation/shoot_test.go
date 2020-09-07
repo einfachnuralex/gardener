@@ -217,8 +217,10 @@ var _ = Describe("Shoot Validation Tests", func() {
 						},
 					},
 					Networking: core.Networking{
-						Type:         "some-network-plugin",
-						FeatureGates: map[string]string{},
+						Type: "some-network-plugin",
+						FeatureGates: core.FeatureGates{
+							IPv6DualStack: true,
+						},
 					},
 					Provider: core.Provider{
 						Type:    "aws",
@@ -1765,7 +1767,7 @@ var _ = Describe("Shoot Validation Tests", func() {
 			})
 
 			It("should forbid not defining dual stack cidr in dual stack mode", func() {
-				shoot.Spec.Networking.FeatureGates["IPv6DualStack"] = "true"
+				shoot.Spec.Networking.FeatureGates.IPv6DualStack = true
 				bla := "192.168.178.0/24"
 				shoot.Spec.Networking.Nodes = &bla
 				errorList := ValidateShoot(shoot)
@@ -1774,6 +1776,15 @@ var _ = Describe("Shoot Validation Tests", func() {
 					"Type":  Equal(field.ErrorTypeInvalid),
 					"Field": Equal("spec.networking.nodes"),
 				}))))
+			})
+
+			It("should forbid not defining dual stack cidr in dual stack mode", func() {
+				shoot.Spec.Networking.FeatureGates.IPv6DualStack = true
+				bla := "192.168.178.0/24,fd02:0800::0:0/112"
+				shoot.Spec.Networking.Nodes = &bla
+				errorList := ValidateShoot(shoot)
+
+				Expect(errorList).To(HaveLen(0))
 			})
 		})
 
