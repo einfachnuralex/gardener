@@ -828,8 +828,10 @@ func (b *Botanist) deployNetworkPolicies(ctx context.Context, denyAll bool) erro
 	excludeNets = append(excludeNets, b.Seed.Info.Spec.Networks.BlockCIDRs...)
 
 	var shootCIDRNetworks []string
-	if v := b.Shoot.GetNodeNetwork(); v != nil {
-		shootCIDRNetworks = append(shootCIDRNetworks, *v)
+	if val := b.Shoot.GetNodeNetwork(); val != nil {
+		for _, shootCIDRNetwork := range strings.Split(string(*val), ",") {
+			shootCIDRNetworks = append(shootCIDRNetworks, shootCIDRNetwork)
+		}
 	}
 	if val := b.Shoot.Info.Spec.Networking.Pods; val != nil {
 		for _, podNet := range strings.Split(string(*val), ",") {

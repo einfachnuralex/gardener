@@ -16,8 +16,9 @@
 # v1.7.46: added json definition
 # v1.7.47: executed make generate
 # v1.7.48: executed make generate v2
+# v1.7.49: added split for node cidrs
 
-EFFECTIVE_VERSION=v1.7.48
+EFFECTIVE_VERSION=v1.7.49
 REGISTRY=registry.alpha.ske.eu01.stackit.cloud/gardener-ds
 APISERVER_IMAGE_REPOSITORY=$REGISTRY/apiserver
 CONROLLER_MANAGER_IMAGE_REPOSITORY=$REGISTRY/controller-manager
