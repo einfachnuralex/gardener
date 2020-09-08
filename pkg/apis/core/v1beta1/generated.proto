@@ -601,6 +601,13 @@ message Extension {
   optional bool disabled = 3;
 }
 
+// FeatureGates Some random comment
+message FeatureGates {
+  // IPv6DualStack Some random comment
+  // +optional
+  optional bool IPv6DualStack = 1;
+}
+
 // Gardener holds the information about the Gardener version that operated a resource.
 message Gardener {
   // ID is the Docker container id of the Gardener which last acted on a resource.
@@ -1130,6 +1137,10 @@ message Networking {
   // Services is the CIDR of the service network.
   // +optional
   optional string services = 5;
+
+  // FeatureGates Some random comment
+  // +optional
+  optional FeatureGates featureGates = 6;
 }
 
 // NginxIngress describes configuration values for the nginx-ingress addon.

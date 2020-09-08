@@ -74,6 +74,7 @@ func GetOpenAPIDefinitions(ref common.ReferenceCallback) map[string]common.OpenA
 		"github.com/gardener/gardener/pkg/apis/core/v1alpha1.ExpirableVersion":                      schema_pkg_apis_core_v1alpha1_ExpirableVersion(ref),
 		"github.com/gardener/gardener/pkg/apis/core/v1alpha1.Extension":                             schema_pkg_apis_core_v1alpha1_Extension(ref),
 		"github.com/gardener/gardener/pkg/apis/core/v1alpha1.ExtensionResourceState":                schema_pkg_apis_core_v1alpha1_ExtensionResourceState(ref),
+		"github.com/gardener/gardener/pkg/apis/core/v1alpha1.FeatureGates":                          schema_pkg_apis_core_v1alpha1_FeatureGates(ref),
 		"github.com/gardener/gardener/pkg/apis/core/v1alpha1.Gardener":                              schema_pkg_apis_core_v1alpha1_Gardener(ref),
 		"github.com/gardener/gardener/pkg/apis/core/v1alpha1.GardenerResourceData":                  schema_pkg_apis_core_v1alpha1_GardenerResourceData(ref),
 		"github.com/gardener/gardener/pkg/apis/core/v1alpha1.Hibernation":                           schema_pkg_apis_core_v1alpha1_Hibernation(ref),
@@ -200,6 +201,7 @@ func GetOpenAPIDefinitions(ref common.ReferenceCallback) map[string]common.OpenA
 		"github.com/gardener/gardener/pkg/apis/core/v1beta1.Endpoint":                               schema_pkg_apis_core_v1beta1_Endpoint(ref),
 		"github.com/gardener/gardener/pkg/apis/core/v1beta1.ExpirableVersion":                       schema_pkg_apis_core_v1beta1_ExpirableVersion(ref),
 		"github.com/gardener/gardener/pkg/apis/core/v1beta1.Extension":                              schema_pkg_apis_core_v1beta1_Extension(ref),
+		"github.com/gardener/gardener/pkg/apis/core/v1beta1.FeatureGates":                           schema_pkg_apis_core_v1beta1_FeatureGates(ref),
 		"github.com/gardener/gardener/pkg/apis/core/v1beta1.Gardener":                               schema_pkg_apis_core_v1beta1_Gardener(ref),
 		"github.com/gardener/gardener/pkg/apis/core/v1beta1.Hibernation":                            schema_pkg_apis_core_v1beta1_Hibernation(ref),
 		"github.com/gardener/gardener/pkg/apis/core/v1beta1.HibernationSchedule":                    schema_pkg_apis_core_v1beta1_HibernationSchedule(ref),
@@ -2316,6 +2318,26 @@ func schema_pkg_apis_core_v1alpha1_ExtensionResourceState(ref common.ReferenceCa
 	}
 }
 
+func schema_pkg_apis_core_v1alpha1_FeatureGates(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "FeatureGates Some random comment",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"IPv6DualStack": {
+						SchemaProps: spec.SchemaProps{
+							Description: "IPv6DualStack Some random comment",
+							Type:        []string{"boolean"},
+							Format:      "",
+						},
+					},
+				},
+			},
+		},
+	}
+}
+
 func schema_pkg_apis_core_v1alpha1_Gardener(ref common.ReferenceCallback) common.OpenAPIDefinition {
 	return common.OpenAPIDefinition{
 		Schema: spec.Schema{
@@ -3601,12 +3623,18 @@ func schema_pkg_apis_core_v1alpha1_Networking(ref common.ReferenceCallback) comm
 							Format:      "",
 						},
 					},
+					"featureGates": {
+						SchemaProps: spec.SchemaProps{
+							Description: "FeatureGates Some random comment",
+							Ref:         ref("github.com/gardener/gardener/pkg/apis/core/v1alpha1.FeatureGates"),
+						},
+					},
 				},
 				Required: []string{"type"},
 			},
 		},
 		Dependencies: []string{
-			"k8s.io/apimachinery/pkg/runtime.RawExtension"},
+			"github.com/gardener/gardener/pkg/apis/core/v1alpha1.FeatureGates", "k8s.io/apimachinery/pkg/runtime.RawExtension"},
 	}
 }
 
@@ -8001,6 +8029,26 @@ func schema_pkg_apis_core_v1beta1_Extension(ref common.ReferenceCallback) common
 	}
 }
 
+func schema_pkg_apis_core_v1beta1_FeatureGates(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "FeatureGates Some random comment",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"IPv6DualStack": {
+						SchemaProps: spec.SchemaProps{
+							Description: "IPv6DualStack Some random comment",
+							Type:        []string{"boolean"},
+							Format:      "",
+						},
+					},
+				},
+			},
+		},
+	}
+}
+
 func schema_pkg_apis_core_v1beta1_Gardener(ref common.ReferenceCallback) common.OpenAPIDefinition {
 	return common.OpenAPIDefinition{
 		Schema: spec.Schema{
@@ -9250,12 +9298,18 @@ func schema_pkg_apis_core_v1beta1_Networking(ref common.ReferenceCallback) commo
 							Format:      "",
 						},
 					},
+					"featureGates": {
+						SchemaProps: spec.SchemaProps{
+							Description: "FeatureGates Some random comment",
+							Ref:         ref("github.com/gardener/gardener/pkg/apis/core/v1beta1.FeatureGates"),
+						},
+					},
 				},
 				Required: []string{"type"},
 			},
 		},
 		Dependencies: []string{
-			"k8s.io/apimachinery/pkg/runtime.RawExtension"},
+			"github.com/gardener/gardener/pkg/apis/core/v1beta1.FeatureGates", "k8s.io/apimachinery/pkg/runtime.RawExtension"},
 	}
 }
 

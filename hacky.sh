@@ -15,8 +15,9 @@
 # v1.7.45: changed from pointer to direct reference
 # v1.7.46: added json definition
 # v1.7.47: executed make generate
+# v1.7.48: executed make generate v2
 
-EFFECTIVE_VERSION=v1.7.47
+EFFECTIVE_VERSION=v1.7.48
 REGISTRY=registry.alpha.ske.eu01.stackit.cloud/gardener-ds
 APISERVER_IMAGE_REPOSITORY=$REGISTRY/apiserver
 CONROLLER_MANAGER_IMAGE_REPOSITORY=$REGISTRY/controller-manager
