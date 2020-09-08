@@ -14,8 +14,9 @@
 # v1.7.44: added featuregate field to shoot v1beta1
 # v1.7.45: changed from pointer to direct reference
 # v1.7.46: added json definition
+# v1.7.47: executed make generate
 
-EFFECTIVE_VERSION=v1.7.45
+EFFECTIVE_VERSION=v1.7.47
 REGISTRY=registry.alpha.ske.eu01.stackit.cloud/gardener-ds
 APISERVER_IMAGE_REPOSITORY=$REGISTRY/apiserver
 CONROLLER_MANAGER_IMAGE_REPOSITORY=$REGISTRY/controller-manager
