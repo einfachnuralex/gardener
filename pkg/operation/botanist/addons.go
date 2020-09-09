@@ -46,7 +46,7 @@ import (
 
 const (
 	// DNSIngressName is a constant for a DNS resources used for the ingress domain name.
-	DNSIngressName = "ingress"
+	DNSIngressName = "i"
 	// SecretLabelKeyManagedResource is a key for a label on a secret with the value 'managed-resource'.
 	SecretLabelKeyManagedResource = "managed-resource"
 )
