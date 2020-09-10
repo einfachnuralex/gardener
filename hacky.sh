@@ -18,8 +18,10 @@
 # v1.7.48: executed make generate v2
 # v1.7.49: added split for node cidrs
 # v1.7.50: changed ingress dns prefix to i
+# v1.7.51: updated validation
+# v1.7.52: lil fix
 
-EFFECTIVE_VERSION=v1.7.50
+EFFECTIVE_VERSION=v1.7.52
 REGISTRY=registry.alpha.ske.eu01.stackit.cloud/gardener-ds
 APISERVER_IMAGE_REPOSITORY=$REGISTRY/apiserver
 CONROLLER_MANAGER_IMAGE_REPOSITORY=$REGISTRY/controller-manager
