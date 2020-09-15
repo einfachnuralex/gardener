@@ -50,9 +50,13 @@ spec:
         - --attach-detach-reconcile-sync-period=1m0s
         - --controllers=*,bootstrapsigner,tokencleaner
 
+        {{- if hasKey .Values "featureGates" }}
         {{- if hasKey .Values.featureGates "IPv6DualStack" }}
+        {{- if eq .Values.featureGates.IPv6DualStack true }}
         - --node-cidr-mask-size-ipv4={{ .Values.nodeCIDRMaskSize }}
         - --node-cidr-mask-size-ipv6=120
+        {{- end }}
+        {{- end }}
         {{- else }}
         {{- if .Values.nodeCIDRMaskSize }}
         - --node-cidr-mask-size={{ .Values.nodeCIDRMaskSize }}

@@ -20,8 +20,12 @@
 # v1.7.50: changed ingress dns prefix to i
 # v1.7.51: updated validation
 # v1.7.52: lil fix
+# v1.7.53: updated kube-controller-manager chart that it wont crash on empty featureGates
+# v1.7.54: "
+# v1.7.55: "
+# v1.7.56: "
 
-EFFECTIVE_VERSION=v1.7.52
+EFFECTIVE_VERSION=v1.7.56
 REGISTRY=registry.alpha.ske.eu01.stackit.cloud/gardener-ds
 APISERVER_IMAGE_REPOSITORY=$REGISTRY/apiserver
 CONROLLER_MANAGER_IMAGE_REPOSITORY=$REGISTRY/controller-manager
