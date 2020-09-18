@@ -24,8 +24,9 @@
 # v1.7.54: "
 # v1.7.55: "
 # v1.7.56: "
+# v1.7.57: changed IngressPrefix
 
-EFFECTIVE_VERSION=v1.7.56
+EFFECTIVE_VERSION=v1.7.57
 REGISTRY=registry.alpha.ske.eu01.stackit.cloud/gardener-ds
 APISERVER_IMAGE_REPOSITORY=$REGISTRY/apiserver
 CONROLLER_MANAGER_IMAGE_REPOSITORY=$REGISTRY/controller-manager

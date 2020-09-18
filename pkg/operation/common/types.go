@@ -195,7 +195,7 @@ const (
 	// IngressPrefix is the part of a FQDN which will be used to construct the domain name for an ingress controller of
 	// a Shoot cluster. For example, when a Shoot specifies domain 'cluster.example.com', the ingress domain would be
 	// '*.<IngressPrefix>.cluster.example.com'.
-	IngressPrefix = "ingress"
+	IngressPrefix = "i"
 
 	// APIServerPrefix is the part of a FQDN which will be used to construct the domain name for the kube-apiserver of
 	// a Shoot cluster. For example, when a Shoot specifies domain 'cluster.example.com', the apiserver domain would be
