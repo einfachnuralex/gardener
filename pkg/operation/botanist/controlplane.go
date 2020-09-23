@@ -851,7 +851,9 @@ func (b *Botanist) deployNetworkPolicies(ctx context.Context, denyAll bool) erro
 
 	var allCIDRNetworks []string
 	if v := b.Seed.Info.Spec.Networks.Nodes; v != nil {
-		allCIDRNetworks = append(allCIDRNetworks, *v)
+		for _, cidr := range strings.Split(*v, ",") {
+			allCIDRNetworks = append(allCIDRNetworks, cidr)
+		}
 	}
 	allCIDRNetworks = append(allCIDRNetworks, shootCIDRNetworks...)
 	allCIDRNetworks = append(allCIDRNetworks, excludeNets...)
