@@ -28,9 +28,10 @@
 # v1.7.58: rebuild
 # v1.7.59: introduced validation change for seed cidrs
 # v1.7.60: introduced validation change for seed cidrs in gardenlet seed reconcile routine
+# v1.7.61: fixed bug where b.Seed.Info.Spec.Networks.Nodes was not respected to be ipv4,ipv6
 # v1.10.2: rebased to v1.10.1
 
-EFFECTIVE_VERSION=v1.7.60
+EFFECTIVE_VERSION=v1.7.61
 REGISTRY=registry.alpha.ske.eu01.stackit.cloud/gardener-ds
 APISERVER_IMAGE_REPOSITORY=$REGISTRY/apiserver
 CONROLLER_MANAGER_IMAGE_REPOSITORY=$REGISTRY/controller-manager
