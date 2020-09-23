@@ -27,9 +27,10 @@
 # v1.7.57: changed IngressPrefix
 # v1.7.58: rebuild
 # v1.7.59: introduced validation change for seed cidrs
+# v1.7.60: introduced validation change for seed cidrs in gardenlet seed reconcile routine
 # v1.10.2: rebased to v1.10.1
 
-EFFECTIVE_VERSION=v1.7.58
+EFFECTIVE_VERSION=v1.7.60
 REGISTRY=registry.alpha.ske.eu01.stackit.cloud/gardener-ds
 APISERVER_IMAGE_REPOSITORY=$REGISTRY/apiserver
 CONROLLER_MANAGER_IMAGE_REPOSITORY=$REGISTRY/controller-manager

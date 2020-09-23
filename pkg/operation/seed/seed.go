@@ -550,12 +550,17 @@ func BootstrapCluster(k8sSeedClient kubernetes.Interface, seed *Seed, secrets ma
 	applierOptions[issuerGK] = retainStatusInformation
 	applierOptions[druidGK] = retainStatusInformation
 
-	networks := []string{
-		seed.Info.Spec.Networks.Pods,
-		seed.Info.Spec.Networks.Services,
+	var networks []string
+	for _, cidr := range strings.Split(seed.Info.Spec.Networks.Pods, ",") {
+		networks = append(networks, cidr)
+	}
+	for _, cidr := range strings.Split(seed.Info.Spec.Networks.Services, ",") {
+		networks = append(networks, cidr)
 	}
 	if v := seed.Info.Spec.Networks.Nodes; v != nil {
-		networks = append(networks, *v)
+		for _, cidr := range strings.Split(*v, ",") {
+			networks = append(networks, cidr)
+		}
 	}
 
 	privateNetworks, err := common.ToExceptNetworks(common.AllPrivateNetworkBlocks(), networks...)
