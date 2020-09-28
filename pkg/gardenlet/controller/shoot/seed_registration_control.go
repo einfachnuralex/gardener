@@ -349,6 +349,9 @@ func prepareSeedConfig(ctx context.Context, c client.Client, shoot *gardencorev1
 			VerticalPodAutoscaler: &gardencorev1beta1.SeedSettingVerticalPodAutoscaler{
 				Enabled: !gardencorev1beta1helper.ShootWantsVerticalPodAutoscaler(shoot),
 			},
+			LoadBalancerServices: &gardencorev1beta1.SeedSettingLoadBalancerServices{
+				Annotations: shootedSeedConfig.LoadBalancerAnnotations,
+			},
 		},
 		Taints: taints,
 		Backup: backupProfile,

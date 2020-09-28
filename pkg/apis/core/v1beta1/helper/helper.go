@@ -264,6 +264,7 @@ type ShootedSeed struct {
 	NoGardenlet                    bool
 	UseServiceAccountBootstrapping bool
 	WithSecretRef                  bool
+	LoadBalancerAnnotations        map[string]string
 }
 
 type ShootedSeedAPIServer struct {
@@ -333,6 +334,12 @@ func parseShootedSeed(annotation string) (*ShootedSeed, error) {
 	}
 	shootedSeed.Backup = backup
 
+	loadBalancerAnnotations, err := parseShootedSeedLoadBalancerAnnotations(settings)
+	if err != nil {
+		return nil, err
+	}
+	shootedSeed.LoadBalancerAnnotations = loadBalancerAnnotations
+
 	if size, ok := settings["minimumVolumeSize"]; ok {
 		shootedSeed.MinimumVolumeSize = &size
 	}
@@ -376,6 +383,16 @@ func parseShootedSeedBlockCIDRs(settings map[string]string) ([]string, error) {
 	}
 
 	return strings.Split(cidrs, ";"), nil
+}
+
+func parseShootedSeedLoadBalancerAnnotations(settings map[string]string) (map[string]string, error) {
+	annotationMap := make(map[string]string)
+	for key, value := range settings {
+		if strings.HasPrefix(key, "loadBalancerAnnotations") {
+			annotationMap[strings.TrimPrefix(key, "loadBalancerAnnotations.")] = value
+		}
+	}
+	return annotationMap, nil
 }
 
 func parseShootedSeedShootDefaults(settings map[string]string) (*gardencorev1beta1.ShootNetworks, error) {
