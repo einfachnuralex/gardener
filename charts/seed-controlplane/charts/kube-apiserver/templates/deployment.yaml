@@ -302,6 +302,8 @@ spec:
         - --agent-port={{ .Values.konnectivityTunnel.agentPort }}
         - --admin-port={{ .Values.konnectivityTunnel.adminPort }}
         - --delete-existing-uds-file=true
+        # Works only with PR#112
+        - --v=5
         livenessProbe:
           httpGet:
             scheme: HTTP
