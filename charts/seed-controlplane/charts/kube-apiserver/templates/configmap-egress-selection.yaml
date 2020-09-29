@@ -12,6 +12,7 @@ data:
     egressSelections:
     - name: cluster
       connection:
+        #proxyProtocol: GRPC
         proxyProtocol: HTTPConnect
         transport:
           uds:

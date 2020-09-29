@@ -286,20 +286,42 @@ spec:
           - /proxy-server
         args:
         - --uds-name=/etc/srv/kubernetes/konnectivity-server/konnectivity-server.socket
-        - --log-file=/var/log/konnectivity-server/info.log
-        - --logtostderr=false
-        - --log-file-max-size=12
+        #- --log-file=/var/log/konnectivity-server/info.log
+        - --logtostderr=true
+        #- --log-file-max-size=12
         - --cluster-cert=/certs/konnectivity-server/konnectivity-server.crt
         - --cluster-key=/certs/konnectivity-server/konnectivity-server.key
         - --agent-namespace={{ .Values.konnectivityTunnel.agentNamespace }}
         - --agent-service-account=konnectivity-agent
         - --kubeconfig=/etc/srv/kubernetes/konnectivity-server-kubeconfig/kubeconfig
         - --authentication-audience=system:konnectivity-server
+        #- --mode=grpc
         - --mode=http-connect
         - --server-count={{ .Values.konnectivityTunnel.serverCount }}
         - --server-port={{ .Values.konnectivityTunnel.serverPort }}
         - --agent-port={{ .Values.konnectivityTunnel.agentPort }}
         - --admin-port={{ .Values.konnectivityTunnel.adminPort }}
+        - --delete-existing-uds-file=true
+        livenessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /healthz
+            port: 8092
+          successThreshold: 1
+          failureThreshold: 3
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          timeoutSeconds: 15
+        readinessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /healthz
+            port: 8092
+          successThreshold: 1
+          failureThreshold: 3
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 15
         resources:
 {{ toYaml .Values.konnectivityTunnelResources | indent 10 }}
         ports:

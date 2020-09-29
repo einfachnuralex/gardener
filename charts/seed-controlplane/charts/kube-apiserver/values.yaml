@@ -88,8 +88,8 @@ konnectivityTunnelResources:
       cpu: 50m
       memory: 128Mi
     limits:
-      cpu: 200m
-      memory: 500M
+      cpu: 400m
+      memory: 1G
 
 maxReplicas: 1
 minReplicas: 1

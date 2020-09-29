@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-REGISTRY                           := eu.gcr.io/gardener-project/gardener
+REGISTRY                           := registry.alpha.ske.eu01.stackit.cloud/ske
 APISERVER_IMAGE_REPOSITORY         := $(REGISTRY)/apiserver
 CONROLLER_MANAGER_IMAGE_REPOSITORY := $(REGISTRY)/controller-manager
 SCHEDULER_IMAGE_REPOSITORY         := $(REGISTRY)/scheduler
@@ -20,13 +20,9 @@ SEED_ADMISSION_IMAGE_REPOSITORY    := $(REGISTRY)/seed-admission-controller
 GARDENLET_IMAGE_REPOSITORY         := $(REGISTRY)/gardenlet
 PUSH_LATEST_TAG                    := false
 VERSION                            := $(shell cat VERSION)
-EFFECTIVE_VERSION                  := $(VERSION)-$(shell git rev-parse HEAD)
+EFFECTIVE_VERSION                  := $(VERSION)
 REPO_ROOT                          := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 LOCAL_GARDEN_LABEL                 := local-garden
-
-ifneq ($(strip $(shell git status --porcelain 2>/dev/null)),)
-	EFFECTIVE_VERSION := $(EFFECTIVE_VERSION)-dirty
-endif
 
 #########################################
 # Rules for local development scenarios #
@@ -97,10 +93,10 @@ install:
 .PHONY: docker-images
 docker-images:
 	@echo "Building docker images with version and tag $(EFFECTIVE_VERSION)"
-	@docker build --build-arg EFFECTIVE_VERSION=$(EFFECTIVE_VERSION) -t $(APISERVER_IMAGE_REPOSITORY):$(EFFECTIVE_VERSION)         -t $(APISERVER_IMAGE_REPOSITORY):latest         -f Dockerfile --target apiserver .
-	@docker build --build-arg EFFECTIVE_VERSION=$(EFFECTIVE_VERSION) -t $(CONROLLER_MANAGER_IMAGE_REPOSITORY):$(EFFECTIVE_VERSION) -t $(CONROLLER_MANAGER_IMAGE_REPOSITORY):latest -f Dockerfile --target controller-manager .
-	@docker build --build-arg EFFECTIVE_VERSION=$(EFFECTIVE_VERSION) -t $(SCHEDULER_IMAGE_REPOSITORY):$(EFFECTIVE_VERSION)         -t $(SCHEDULER_IMAGE_REPOSITORY):latest         -f Dockerfile --target scheduler .
-	@docker build --build-arg EFFECTIVE_VERSION=$(EFFECTIVE_VERSION) -t $(SEED_ADMISSION_IMAGE_REPOSITORY):$(EFFECTIVE_VERSION)    -t $(SEED_ADMISSION_IMAGE_REPOSITORY):latest    -f Dockerfile --target seed-admission-controller .
+	#@docker build --build-arg EFFECTIVE_VERSION=$(EFFECTIVE_VERSION) -t $(APISERVER_IMAGE_REPOSITORY):$(EFFECTIVE_VERSION)         -t $(APISERVER_IMAGE_REPOSITORY):latest         -f Dockerfile --target apiserver .
+	#@docker build --build-arg EFFECTIVE_VERSION=$(EFFECTIVE_VERSION) -t $(CONROLLER_MANAGER_IMAGE_REPOSITORY):$(EFFECTIVE_VERSION) -t $(CONROLLER_MANAGER_IMAGE_REPOSITORY):latest -f Dockerfile --target controller-manager .
+	#@docker build --build-arg EFFECTIVE_VERSION=$(EFFECTIVE_VERSION) -t $(SCHEDULER_IMAGE_REPOSITORY):$(EFFECTIVE_VERSION)         -t $(SCHEDULER_IMAGE_REPOSITORY):latest         -f Dockerfile --target scheduler .
+	#@docker build --build-arg EFFECTIVE_VERSION=$(EFFECTIVE_VERSION) -t $(SEED_ADMISSION_IMAGE_REPOSITORY):$(EFFECTIVE_VERSION)    -t $(SEED_ADMISSION_IMAGE_REPOSITORY):latest    -f Dockerfile --target seed-admission-controller .
 	@docker build --build-arg EFFECTIVE_VERSION=$(EFFECTIVE_VERSION) -t $(GARDENLET_IMAGE_REPOSITORY):$(EFFECTIVE_VERSION)         -t $(GARDENLET_IMAGE_REPOSITORY):latest         -f Dockerfile --target gardenlet .
 
 .PHONY: docker-login
@@ -109,21 +105,11 @@ docker-login:
 
 .PHONY: docker-push
 docker-push:
-	@if ! docker images $(APISERVER_IMAGE_REPOSITORY) | awk '{ print $$2 }' | grep -q -F $(EFFECTIVE_VERSION); then echo "$(APISERVER_IMAGE_REPOSITORY) version $(EFFECTIVE_VERSION) is not yet built. Please run 'make docker-images'"; false; fi
-	@if ! docker images $(CONROLLER_MANAGER_IMAGE_REPOSITORY) | awk '{ print $$2 }' | grep -q -F $(EFFECTIVE_VERSION); then echo "$(CONROLLER_MANAGER_IMAGE_REPOSITORY) version $(EFFECTIVE_VERSION) is not yet built. Please run 'make docker-images'"; false; fi
-	@if ! docker images $(SCHEDULER_IMAGE_REPOSITORY) | awk '{ print $$2 }' | grep -q -F $(EFFECTIVE_VERSION); then echo "$(SCHEDULER_IMAGE_REPOSITORY) version $(EFFECTIVE_VERSION) is not yet built. Please run 'make docker-images'"; false; fi
-	@if ! docker images $(SEED_ADMISSION_IMAGE_REPOSITORY) | awk '{ print $$2 }' | grep -q -F $(EFFECTIVE_VERSION); then echo "$(SEED_ADMISSION_IMAGE_REPOSITORY) version $(EFFECTIVE_VERSION) is not yet built. Please run 'make docker-images'"; false; fi
-	@if ! docker images $(GARDENLET_IMAGE_REPOSITORY) | awk '{ print $$2 }' | grep -q -F $(EFFECTIVE_VERSION); then echo "$(GARDENLET_IMAGE_REPOSITORY) version $(EFFECTIVE_VERSION) is not yet built. Please run 'make docker-images'"; false; fi
-	@gcloud docker -- push $(APISERVER_IMAGE_REPOSITORY):$(EFFECTIVE_VERSION)
-	@if [[ "$(PUSH_LATEST_TAG)" == "true" ]]; then gcloud docker -- push $(APISERVER_IMAGE_REPOSITORY):latest; fi
-	@gcloud docker -- push $(CONROLLER_MANAGER_IMAGE_REPOSITORY):$(EFFECTIVE_VERSION)
-	@if [[ "$(PUSH_LATEST_TAG)" == "true" ]]; then gcloud docker -- push $(CONROLLER_MANAGER_IMAGE_REPOSITORY):latest; fi
-	@gcloud docker -- push $(SCHEDULER_IMAGE_REPOSITORY):$(EFFECTIVE_VERSION)
-	@if [[ "$(PUSH_LATEST_TAG)" == "true" ]]; then gcloud docker -- push $(SCHEDULER_IMAGE_REPOSITORY):latest; fi
-	@gcloud docker -- push $(SEED_ADMISSION_IMAGE_REPOSITORY):$(EFFECTIVE_VERSION)
-	@if [[ "$(PUSH_LATEST_TAG)" == "true" ]]; then gcloud docker -- push $(SEED_ADMISSION_IMAGE_REPOSITORY):latest; fi
-	@gcloud docker -- push $(GARDENLET_IMAGE_REPOSITORY):$(EFFECTIVE_VERSION)
-	@if [[ "$(PUSH_LATEST_TAG)" == "true" ]]; then gcloud docker -- push $(GARDENLET_IMAGE_REPOSITORY):latest; fi
+#	@gcloud docker -- push $(APISERVER_IMAGE_REPOSITORY):$(EFFECTIVE_VERSION)
+#	@gcloud docker -- push $(CONROLLER_MANAGER_IMAGE_REPOSITORY):$(EFFECTIVE_#VERSION)
+#	@gcloud docker -- push $(SCHEDULER_IMAGE_REPOSITORY):$(EFFECTIVE_VERSION)
+#	@gcloud docker -- push $(SEED_ADMISSION_IMAGE_REPOSITORY):$(EFFECTIVE_VERSION)
+	@docker -- push $(GARDENLET_IMAGE_REPOSITORY):$(EFFECTIVE_VERSION)
 
 #####################################################################
 # Rules for verification, formatting, linting, testing and cleaning #
