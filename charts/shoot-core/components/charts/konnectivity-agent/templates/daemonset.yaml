@@ -44,13 +44,14 @@ spec:
           command:
             - /proxy-agent
           args:
-            - --log-file=/var/log/konnectivity-agent/info.log
-            - --logtostderr=false
-            - --log-file-max-size=12
+            #- --log-file=/var/log/konnectivity-agent/info.log
+            - --logtostderr=true
+            #- --log-file-max-size=12
             - --ca-cert=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
             - --proxy-server-host={{ .Values.proxyHost }}
             - --proxy-server-port=8132
             - --service-account-token-path=/var/run/secrets/tokens/konnectivity-agent-token
+            - --v=5
           resources:
             requests:
               cpu: 100m
